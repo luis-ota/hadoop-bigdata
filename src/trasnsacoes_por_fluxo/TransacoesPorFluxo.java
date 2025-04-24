@@ -12,7 +12,6 @@ import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.log4j.BasicConfigurator;
-import trasnsacoes_por_ano.TransacoesPorAno;
 
 import java.io.IOException;
 
@@ -40,8 +39,8 @@ public class TransacoesPorFluxo {
 
         // registro das classes
         j.setJarByClass(TransacoesPorFluxo.class);
-        j.setMapperClass(BrazilTransactionMapper.class);
-        j.setReducerClass(BrazilTransactionReducer.class);
+        j.setMapperClass(TransacoesPorFluxoMapper.class);
+        j.setReducerClass(TransacoesPorFluxoReducer.class);
 
         // definicao dos tipos de saida
         j.setMapOutputKeyClass(Text.class);
@@ -57,7 +56,7 @@ public class TransacoesPorFluxo {
         System.exit(j.waitForCompletion(true) ? 0 : 1);
     }
 
-    public static class BrazilTransactionMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
+    public static class TransacoesPorFluxoMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
         public void map(LongWritable key, Text value, Context context)
                 throws IOException, InterruptedException {
             String[] parts = value.toString().split(";");
@@ -66,7 +65,7 @@ public class TransacoesPorFluxo {
         }
     }
 
-    public static class BrazilTransactionReducer extends Reducer<Text, IntWritable, Text, IntWritable> {
+    public static class TransacoesPorFluxoReducer extends Reducer<Text, IntWritable, Text, IntWritable> {
         public void reduce(Text key, Iterable<IntWritable> values, Context context)
                 throws IOException, InterruptedException {
             int sum = 0;

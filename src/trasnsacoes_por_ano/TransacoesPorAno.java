@@ -39,8 +39,8 @@ public class TransacoesPorAno {
 
         // registro das classes
         j.setJarByClass(TransacoesPorAno.class);
-        j.setMapperClass(BrazilTransactionMapper.class);
-        j.setReducerClass(BrazilTransactionReducer.class);
+        j.setMapperClass(TransacoesPorAnoMapper.class);
+        j.setReducerClass(TransacoesPorAnoReducer.class);
 
         // definicao dos tipos de saida
         j.setMapOutputKeyClass(Text.class);
@@ -56,7 +56,7 @@ public class TransacoesPorAno {
         System.exit(j.waitForCompletion(true) ? 0 : 1);
     }
 
-    public static class BrazilTransactionMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
+    public static class TransacoesPorAnoMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
         public void map(LongWritable key, Text value, Context context)
                 throws IOException, InterruptedException {
             String[] parts = value.toString().split(";");
@@ -65,7 +65,7 @@ public class TransacoesPorAno {
         }
     }
 
-    public static class BrazilTransactionReducer extends Reducer<Text, IntWritable, Text, IntWritable> {
+    public static class TransacoesPorAnoReducer extends Reducer<Text, IntWritable, Text, IntWritable> {
         public void reduce(Text key, Iterable<IntWritable> values, Context context)
                 throws IOException, InterruptedException {
             int sum = 0;

@@ -4,14 +4,12 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.*;
-import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.log4j.BasicConfigurator;
-import trasnsacoes_por_ano.TransacoesPorAno;
 
 import java.io.IOException;
 
@@ -39,8 +37,8 @@ public class MaisCaraMaisBarataBrasil {
 
         // registro das classes
         j.setJarByClass(MaisCaraMaisBarataBrasil.class);
-        j.setMapperClass(BrazilTransactionMapper.class);
-        j.setReducerClass(BrazilTransactionReducer.class);
+        j.setMapperClass(MaisCaraMaisBarataBrasilMapper.class);
+        j.setReducerClass(MaisCaraMaisBarataBrasilReducer.class);
 
         // definicao dos tipos de saida
         j.setMapOutputKeyClass(Text.class);
@@ -56,7 +54,7 @@ public class MaisCaraMaisBarataBrasil {
         System.exit(j.waitForCompletion(true) ? 0 : 1);
     }
 
-    public static class BrazilTransactionMapper extends Mapper<LongWritable, Text, Text, DoubleWritable> {
+    public static class MaisCaraMaisBarataBrasilMapper extends Mapper<LongWritable, Text, Text, DoubleWritable> {
         public void map(LongWritable key, Text value, Context context)
                 throws IOException, InterruptedException {
 
@@ -79,7 +77,7 @@ public class MaisCaraMaisBarataBrasil {
         }
     }
 
-    public static class BrazilTransactionReducer extends Reducer<Text, DoubleWritable, Text, Text> {
+    public static class MaisCaraMaisBarataBrasilReducer extends Reducer<Text, DoubleWritable, Text, Text> {
         public void reduce(Text key, Iterable<DoubleWritable> values, Context context)
                 throws IOException, InterruptedException {
 

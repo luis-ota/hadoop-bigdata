@@ -4,7 +4,6 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.DoubleWritable;
-import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
@@ -13,7 +12,6 @@ import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.log4j.BasicConfigurator;
-import trasnsacoes_por_ano.TransacoesPorAno;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -42,8 +40,8 @@ public class ValorMedioPorAnoBrasil {
 
         // registro das classes
         j.setJarByClass(ValorMedioPorAnoBrasil.class);
-        j.setMapperClass(BrazilTransactionMapper.class);
-        j.setReducerClass(BrazilTransactionReducer.class);
+        j.setMapperClass(ValorMedioPorAnoBrasilMapper.class);
+        j.setReducerClass(ValorMedioPorAnoBrasilReducer.class);
 
         // definicao dos tipos de saida
         j.setMapOutputKeyClass(Text.class);
@@ -59,7 +57,7 @@ public class ValorMedioPorAnoBrasil {
         System.exit(j.waitForCompletion(true) ? 0 : 1);
     }
 
-    public static class BrazilTransactionMapper extends Mapper<LongWritable, Text, Text, DoubleWritable> {
+    public static class ValorMedioPorAnoBrasilMapper extends Mapper<LongWritable, Text, Text, DoubleWritable> {
         public void map(LongWritable key, Text value, Context context)
                 throws IOException, InterruptedException {
             String[] parts = value.toString().split(";");
@@ -69,7 +67,7 @@ public class ValorMedioPorAnoBrasil {
         }
     }
 
-    public static class BrazilTransactionReducer extends Reducer<Text, DoubleWritable, Text, Text> {
+    public static class ValorMedioPorAnoBrasilReducer extends Reducer<Text, DoubleWritable, Text, Text> {
         public void reduce(Text key, Iterable<DoubleWritable> values, Context context)
                 throws IOException, InterruptedException {
 

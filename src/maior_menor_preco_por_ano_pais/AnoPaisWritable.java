@@ -1,4 +1,4 @@
-package valor_medio_por_ano_export_brasil;
+package maior_menor_preco_por_ano_pais;
 
 import org.apache.hadoop.io.WritableComparable;
 

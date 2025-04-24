@@ -1,4 +1,4 @@
-package trasnsacoes_por_ano;
+package trasnsacoes_por_categoria;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
@@ -39,8 +39,8 @@ public class TransacoesPorCategoria {
 
         // registro das classes
         j.setJarByClass(TransacoesPorCategoria.class);
-        j.setMapperClass(BrazilTransactionMapper.class);
-        j.setReducerClass(BrazilTransactionReducer.class);
+        j.setMapperClass(TransacoesPorCategoriaMapper.class);
+        j.setReducerClass(TransacoesPorCategoriaReducer.class);
 
         // definicao dos tipos de saida
         j.setMapOutputKeyClass(Text.class);
@@ -56,7 +56,7 @@ public class TransacoesPorCategoria {
         System.exit(j.waitForCompletion(true) ? 0 : 1);
     }
 
-    public static class BrazilTransactionMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
+    public static class TransacoesPorCategoriaMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
         public void map(LongWritable key, Text value, Context context)
                 throws IOException, InterruptedException {
             String[] parts = value.toString().split(";");
@@ -65,7 +65,7 @@ public class TransacoesPorCategoria {
         }
     }
 
-    public static class BrazilTransactionReducer extends Reducer<Text, IntWritable, Text, IntWritable> {
+    public static class TransacoesPorCategoriaReducer extends Reducer<Text, IntWritable, Text, IntWritable> {
         public void reduce(Text key, Iterable<IntWritable> values, Context context)
                 throws IOException, InterruptedException {
             int sum = 0;

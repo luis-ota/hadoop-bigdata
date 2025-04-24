@@ -1,4 +1,4 @@
-package maior_menor_preco_por_ano_pais;
+package valor_medio_por_ano_export_brasil;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
@@ -12,7 +12,6 @@ import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.log4j.BasicConfigurator;
-import trasnsacoes_por_ano.TransacoesPorAno;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -37,12 +36,12 @@ public class ValorMedioExportPorAnoBrasil {
         }
 
         // criacao do job e seu nome
-        Job j = new Job(c, "ValorMedioPorAnoBrasil");
+        Job j = new Job(c, "ValorMedioExportPorAnoBrasil");
 
         // registro das classes
-        j.setJarByClass(TransacoesPorAno.class);
-        j.setMapperClass(BrazilTransactionMapper.class);
-        j.setReducerClass(BrazilTransactionReducer.class);
+        j.setJarByClass(ValorMedioExportPorAnoBrasil.class);
+        j.setMapperClass(ValorMedioExportPorAnoBrasilMapper.class);
+        j.setReducerClass(ValorMedioExportPorAnoBrasilReducer.class);
 
         // definicao dos tipos de saida
         j.setMapOutputKeyClass(Text.class);
@@ -58,7 +57,7 @@ public class ValorMedioExportPorAnoBrasil {
         System.exit(j.waitForCompletion(true) ? 0 : 1);
     }
 
-    public static class BrazilTransactionMapper extends Mapper<LongWritable, Text, Text, DoubleWritable> {
+    public static class ValorMedioExportPorAnoBrasilMapper extends Mapper<LongWritable, Text, Text, DoubleWritable> {
         public void map(LongWritable key, Text value, Context context)
                 throws IOException, InterruptedException {
             String[] parts = value.toString().split(";");
@@ -68,12 +67,13 @@ public class ValorMedioExportPorAnoBrasil {
         }
     }
 
-    public static class BrazilTransactionReducer extends Reducer<Text, DoubleWritable, Text, Text> {
+    public static class ValorMedioExportPorAnoBrasilReducer extends Reducer<Text, DoubleWritable, Text, Text> {
         public void reduce(Text key, Iterable<DoubleWritable> values, Context context)
                 throws IOException, InterruptedException {
 
             double sum = 0;
             int count = 0;
+
 
             for (DoubleWritable val : values) {
                 sum += val.get();
